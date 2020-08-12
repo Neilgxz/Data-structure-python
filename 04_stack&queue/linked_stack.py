@@ -3,6 +3,7 @@
     基于链表实现的栈
     
     Author: Wenru
+    空间复杂度，是指除了原本的数据存储空间外，算法运行还需要额外的存储空间。
 """
 
 from typing import Optional
@@ -15,7 +16,8 @@ class Node:
     
 
 class LinkedStack:
-    """A stack based upon singly-linked list.
+    """
+    A stack based upon singly-linked list.
     """
     def __init__(self):
         self._top: Node = None
@@ -37,7 +39,7 @@ class LinkedStack:
         while current:
             nums.append(current._data)
             current = current._next
-        return " ".join(f"{num}]" for num in nums)
+        return " ".join(f"[{num}]" for num in nums)
 
 if __name__ == "__main__":
     stack = LinkedStack()
