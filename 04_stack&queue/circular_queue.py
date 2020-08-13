@@ -14,7 +14,7 @@ class CircularQueue:
         self._tail = 0
     
     def enqueue(self, item: str) -> bool:
-        if (self._tail + 1) % self._capacity == self._head:
+        if (self._tail + 1) % self._capacity == self._head: # 队满条件
             return False
         
         self._items.append(item)
@@ -36,8 +36,8 @@ class CircularQueue:
 if __name__ == "__main__":
     q = CircularQueue(5)
     for i in range(5):
-        q.enqueue(str(i))
-    q.dequeue()
-    q.dequeue()
+        q.enqueue(str(i)) # 0 1 2 3 4
+    q.dequeue() # 1 2 3 4
+    q.dequeue() # 2 3 4
     q.enqueue(str(5))
-    print(q)
+    print(q) # 2 3 4 5 循环放置在原队头位置。
