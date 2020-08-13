@@ -58,3 +58,23 @@ def remove_nth_from_end(head: Node, n: int) -> Optional[Node]:
     # 循环结束 fast指向尾结点，slow指向倒数第n+1个结点（尾结点为倒数第1个结点）
     slow.next = slow.next.next
     return head
+"""
+剑指22. 输入一个链表，输出该链表中倒数第k个节点。为了符合大多数人的习惯，本题从1开始计数，即链表的尾节点是倒数第1个节点。
+例如，一个链表有6个节点，从头节点开始，它们的值依次是1、2、3、4、5、6。这个链表的倒数第3个节点是值为4的节点
+"""
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+class Solution:
+    def getKthFromEnd(self, head: ListNode, k: int) -> ListNode:
+        res = ListNode(0)
+        res.next = head
+        l1 = res
+        l2 = res
+        for i in range(k):
+            l1 = l1.next
+        while l1.next:
+            l1 = l1.next
+            l2 = l2.next
+        return l2.next
