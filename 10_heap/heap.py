@@ -1,96 +1,178 @@
-"""
-    Max-heap
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
 
-    Author: Wenru Dong
-"""
+import math
+import random
 
-from typing import Optional, List
 
 class Heap:
-    def __init__(self, capacity: int):
-        self._data = [0] * (capacity + 1)
+    def __init__(self, nums=None, capacity=100):
+        self._data = []
         self._capacity = capacity
-        self._count = 0
-    
-    @classmethod
-    def _parent(cls, child_index: int) -> int:
-        """The parent index."""
-        return child_index // 2
-    
-    @classmethod
-    def _left(cls, parent_index: int) -> int:
-        """The left child index."""
-        return 2 * parent_index
-    
-    @classmethod
-    def _right(cls, parent_index: int) -> int:
-        """The right child index."""
-        return 2 * parent_index + 1
+        if type(nums) == list and len(nums) <= self._capacity:
+            for n in nums:
+                assert type(n) is int
+                self._data.append(n)
+        self._length = len(self._data)
+        self._heapify()
 
-    def _siftup(self) -> None:
-        i, parent = self._count, Heap._parent(self._count)
-        while parent and self._data[i] > self._data[parent]:
-            self._data[i], self._data[parent] = self._data[parent], self._data[i]
-            i, parent = parent, Heap._parent(parent)
+    def _heapify(self):
+        if self._length <= 1:
+            return
 
-    @classmethod
-    def _siftdown(cls, a: List[int], count: int, root_index: int = 1) -> None:
-        i = larger_child_index = root_index
-        while True:
-            left, right = cls._left(i), cls._right(i)
-            if left <= count and a[i] < a[left]:
-                larger_child_index = left
-            if right <= count and a[larger_child_index] < a[right]:
-                larger_child_index = right
-            if larger_child_index == i: break
-            a[i], a[larger_child_index] = a[larger_child_index], a[i]
-            i = larger_child_index
+        # idx of the Last Parent node
+        lp = (self._length - 2) // 2
 
-    def insert(self, value: int) -> None:
-        if self._count >= self._capacity: return
-        self._count += 1
-        self._data[self._count] = value
-        self._siftup()
+        for i in range(lp, -1, -1):
+            self._heap_down(i)
 
-    def remove_max(self) -> Optional[int]:
-        if self._count:
-            result = self._data[1]
-            self._data[1] = self._data[self._count]
-            self._count -= 1
-            Heap._siftdown(self._data, self._count)
-            return result
+    def _heap_down(self, idx):
+        pass
 
-    @classmethod
-    def build_heap(cls, a: List[int]) -> None:
-        """Data in a needs to start from index 1."""
-        for i in range((len(a) - 1)//2, 0, -1):
-            cls._siftdown(a, len(a) - 1, i)
-    
-    @classmethod
-    def sort(cls, a: List[int]) -> None:
-        """Data in a needs to start from index 1."""
-        cls.build_heap(a)
-        k = len(a) - 1
-        while k > 1:
-            a[1], a[k] = a[k], a[1]
-            k -= 1
-            cls._siftdown(a, k)
+    def insert(self, num):
+        pass
+
+    def get_top(self):
+        if self._length <= 0:
+            return None
+        return self._data[0]
+
+    def remove_top(self):
+        if self._length <= 0:
+            return None
+
+        self._data[0], self._data[-1] = self._data[-1], self._data[0]
+        ret = self._data.pop()
+        self._length -= 1
+        self._heap_down(0)
+
+        return ret
+
+    def get_data(self):
+        return self._data
+
+    def get_length(self):
+        return self._length
+
+    @staticmethod
+    def _draw_heap(data):
+        """
+        格式化打印
+        :param data:
+        :return:
+        """
+        length = len(data)
+
+        if length == 0:
+            return 'empty heap'
+
+        ret = ''
+        for i, n in enumerate(data):
+            ret += str(n)
+            # 每行最后一个换行
+            if i == 2 ** int(math.log(i + 1, 2) + 1) - 2 or i == len(data) - 1:
+                ret += '\n'
+            else:
+                ret += ', '
+
+        return ret
 
     def __repr__(self):
-        return self._data[1 : self._count + 1].__repr__()
+        return self._draw_heap(self._data)
 
 
-if __name__ == "__main__":
-    hp = Heap(10)
-    hp.insert(3)
-    hp.insert(9)
-    hp.insert(1)
-    hp.insert(8)
-    hp.insert(7)
-    hp.insert(3)
-    print(hp)
-    for _ in range(6):
-        print(hp.remove_max())
-    a = [0, 6, 3, 4, 0, 9, 2, 7, 5, -2, 8, 1, 6, 10]
-    Heap.sort(a)
-    print(a[1:])
+class MaxHeap(Heap):
+    def _heap_down(self, idx):
+        if self._length <= 1:
+            return
+
+        lp = (self._length - 2) // 2
+
+        while idx <= lp:
+            lc = 2 * idx + 1
+            rc = lc + 1
+
+            if rc <= self._length-1:
+                tmp = lc if self._data[lc] > self._data[rc] else rc
+            else:
+                tmp = lc
+
+            if self._data[tmp] > self._data[idx]:
+                self._data[tmp], self._data[idx] = self._data[idx], self._data[tmp]
+                idx = tmp
+            else:
+                break
+
+    def insert(self, num):
+        if self._length >= self._capacity:
+            return False
+
+        self._data.append(num)
+        self._length += 1
+
+        nn = self._length - 1
+        while nn > 0:
+            p = (nn-1) // 2
+
+            if self._data[nn] > self._data[p]:
+                self._data[nn], self._data[p] = self._data[p], self._data[nn]
+                nn = p
+            else:
+                break
+
+        return True
+
+
+class MinHeap(Heap):
+    def _heap_down(self, idx):
+        if self._length <= 1:
+            return
+
+        lp = (self._length - 2) // 2
+
+        while idx <= lp:
+            lc = 2 * idx + 1
+            rc = lc + 1
+
+            if rc <= self._length-1:
+                tmp = lc if self._data[lc] < self._data[rc] else rc
+            else:
+                tmp = lc
+
+            if self._data[tmp] < self._data[idx]:
+                self._data[tmp], self._data[idx] = self._data[idx], self._data[tmp]
+                idx = tmp
+            else:
+                break
+
+    def insert(self, num):
+        if self._length >= self._capacity:
+            return False
+
+        self._data.append(num)
+        self._length += 1
+
+        nn = self._length - 1
+        while nn > 0:
+            p = (nn-1) // 2
+
+            if self._data[nn] < self._data[p]:
+                self._data[nn], self._data[p] = self._data[p], self._data[nn]
+                nn = p
+            else:
+                break
+
+        return True
+
+
+if __name__ == '__main__':
+    nums = list(range(10))
+    random.shuffle(nums)
+
+    max_h = MaxHeap(nums)
+    print('--- max heap ---')
+    print(max_h)
+
+    print('--- min heap ---')
+    min_h = MinHeap(nums)
+    print(min_h)
