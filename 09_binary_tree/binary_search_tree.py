@@ -184,7 +184,7 @@ class BinarySearchTree:
 
         while not q.empty():
             n = q.get()
-
+            # None的叶子节点也算为一个下标，所以显示为满二叉树
             if n[0] is not None:
                 ret.append((n[0].val, n[1]))
                 q.put((n[0].left, n[1]*2))
@@ -202,11 +202,16 @@ class BinarySearchTree:
         if not nodes:
             print('This tree has no nodes.')
             return
-
+        # nodes[-1][1]为最后一个节点的下标，也表示一共有多少个节点；假设完全二叉树n个节点有L层     
+        # n >= 1+2+4+8+...+2^(L-2)+1
+        # n <= 1+2+4+8+...+2^(L-2)+2^(L-1)
+        #   log2(n+1) <= L <= log2n +1
+        # 最小值向上取整或者最大值向下取整都可以获得L
+        #layer_num = math.ceil(math.log((nodes[-1][1]+1), 2)) 
         layer_num = int(math.log(nodes[-1][1], 2)) + 1
         
         prt_nums = []
-        
+        # 每层 2^i个节点 i从0开始
         for i in range(layer_num):
             prt_nums.append([None]*2**i)
 
@@ -220,7 +225,7 @@ class BinarySearchTree:
             prt_str += str(l)[1:-1] + '\n'
 
         return prt_str
-# 返回深度
+# 递归法返回深度
 def maxDepth(root):
     if root is None: 
          return 0

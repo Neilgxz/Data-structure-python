@@ -5,7 +5,7 @@ from queue import Queue
 import pygraphviz as pgv
 import random
 
-OUTPUT_PATH = 'E:/'
+OUTPUT_PATH = 'C:/Users/zgx19/Desktop/study/Github/Data-structure-python/09_binary_tree/'
 
 
 class TreeNode:
