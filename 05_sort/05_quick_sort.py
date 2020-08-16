@@ -38,6 +38,7 @@ if __name__ == "__main__":
     a2 = [2, 2, 2, 2]
     a3 = [4, 3, 2, 1]
     a4 = [5, -1, 9, 3, 7, 8, 3, -2, 9]
+    a5 = [1]
     quick_sort(a1)
     print(a1)
     quick_sort(a2)
@@ -46,3 +47,5 @@ if __name__ == "__main__":
     print(a3)
     quick_sort(a4)
     print(a4)
+    quick_sort(a5)
+    print(a5)
