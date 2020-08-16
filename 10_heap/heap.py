@@ -7,16 +7,19 @@ import random
 
 class Heap:
     def __init__(self, nums=None, capacity=100):
+        # 下标从0开始的数组构成堆
         self._data = []
         self._capacity = capacity
+        # 初始可以输入为一个列表
         if type(nums) == list and len(nums) <= self._capacity:
             for n in nums:
                 assert type(n) is int
                 self._data.append(n)
         self._length = len(self._data)
-        self._heapify()
-
-    def _heapify(self):
+        # 建堆
+        self.build_heap()
+    # 从上向下堆化所有非叶子节点，用于建堆
+    def build_heap(self):
         if self._length <= 1:
             return
 
@@ -31,19 +34,21 @@ class Heap:
 
     def insert(self, num):
         pass
-
+    # 获得堆顶元素
     def get_top(self):
         if self._length <= 0:
             return None
         return self._data[0]
-
+    # 移除堆顶元素，采用从上至下的堆化
     def remove_top(self):
         if self._length <= 0:
             return None
-
+        # 先交换尾元素和堆顶元素
         self._data[0], self._data[-1] = self._data[-1], self._data[0]
+        # 删除此时的尾元素
         ret = self._data.pop()
         self._length -= 1
+        # 堆化堆顶元素
         self._heap_down(0)
 
         return ret
@@ -69,7 +74,8 @@ class Heap:
         ret = ''
         for i, n in enumerate(data):
             ret += str(n)
-            # 每行最后一个换行
+            # 每行最后一个换行 int(math.log(i+1, 2)+1) 是当前层数，根为第1层
+            # 所以2**int(math.log(i+1, 2)+1) - 1 是当前所有层都装满时的结点数，数量再-1就是列表下标。
             if i == 2 ** int(math.log(i + 1, 2) + 1) - 2 or i == len(data) - 1:
                 ret += '\n'
             else:
@@ -80,12 +86,13 @@ class Heap:
     def __repr__(self):
         return self._draw_heap(self._data)
 
-
+# 大顶堆
 class MaxHeap(Heap):
+    # 大顶堆 从上向下堆化下标为idx的元素
     def _heap_down(self, idx):
         if self._length <= 1:
             return
-
+        # 最后一个非叶子节点的下标
         lp = (self._length - 2) // 2
 
         while idx <= lp:
@@ -102,7 +109,7 @@ class MaxHeap(Heap):
                 idx = tmp
             else:
                 break
-
+    # 大顶堆 插入，从下向上的堆化
     def insert(self, num):
         if self._length >= self._capacity:
             return False
@@ -121,9 +128,19 @@ class MaxHeap(Heap):
                 break
 
         return True
+    # 大顶堆，堆排序 从小到大
+    def sort(self):
+        # sort
+        for i in range(self._length-1, 0, -1):
+            self._data[0], self._data[i] = self._data[i], self._data[0]
+            self._length -= 1
+            self._heap_down(0)
+        self._length = len(self._data)
+        return
 
 
 class MinHeap(Heap):
+    # 小顶堆 从上向下堆化下标为idx的元素
     def _heap_down(self, idx):
         if self._length <= 1:
             return
@@ -144,7 +161,7 @@ class MinHeap(Heap):
                 idx = tmp
             else:
                 break
-
+    # 小顶堆 插入，从下向上的堆化
     def insert(self, num):
         if self._length >= self._capacity:
             return False
@@ -163,6 +180,15 @@ class MinHeap(Heap):
                 break
 
         return True
+    # 小顶堆，堆排序 从大到小
+    def sort(self):
+        # sort
+        for i in range(self._length-1, 0, -1):
+            self._data[0], self._data[i] = self._data[i], self._data[0]
+            self._length -= 1
+            self._heap_down(0)
+        self._length = len(self._data)
+        return
 
 
 if __name__ == '__main__':
@@ -173,6 +199,15 @@ if __name__ == '__main__':
     print('--- max heap ---')
     print(max_h)
 
+    max_h.sort()
+    print('--- after sort ---')
+    print(max_h)
+
+
     print('--- min heap ---')
     min_h = MinHeap(nums)
+    print(min_h)
+
+    min_h.sort()
+    print('--- after sort ---')
     print(min_h)
