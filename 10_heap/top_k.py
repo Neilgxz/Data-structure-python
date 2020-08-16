@@ -14,8 +14,9 @@ def top_k(nums, k):
     """
     if len(nums) <= k:
         return nums
-
+    # 先把nums列表的前k个元素构成小顶堆，大于等于堆顶元素的有k-1个，整个堆为前k大元素
     min_h = MinHeap(nums[:k], k)
+    # 其余各个元素 如果大于堆顶元素，则把堆顶元素移除，并添加新元素并从下到上堆化
     for i in range(k, len(nums)):
         tmp = min_h.get_top()
         if nums[i] > tmp:

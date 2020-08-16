@@ -13,7 +13,7 @@ class QueueNode:
     def __repr__(self):
         return str((self.priority, self.data))
 
-
+# 小顶堆
 class PriorityQueue:
     def __init__(self, capacity=100):
         self._capacity = capacity
@@ -29,6 +29,7 @@ class PriorityQueue:
         self._length += 1
 
         # update queue
+        # priority小的往上放。小顶堆。
         nn = self._length - 1
         while nn > 0:
             p = (nn - 1) // 2
@@ -43,11 +44,11 @@ class PriorityQueue:
     def dequeue(self):
         if self._length <= 0:
             raise Exception('the queue is empty....')
-
+        # 取出堆顶元素之后把队尾放到堆顶
         self._q[0], self._q[-1] = self._q[-1], self._q[0]
         ret = self._q.pop()
         self._length -= 1
-
+        # 进行从上到下的堆化
         if self._length > 1:
             # update queue
             lp = (self._length - 2) // 2
