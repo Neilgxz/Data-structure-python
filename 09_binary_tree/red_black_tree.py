@@ -111,7 +111,7 @@ class RedBlackTree:
         :param node:
         :return:
         """
-        n = node
+        n = node # 关注节点
         while n is not self.root and not n.parent.is_black():
             # 父p 叔u 祖父g
             p = self.parent(n)
@@ -210,7 +210,7 @@ class RedBlackTree:
                     b.set_black()                   # case 1
                     p.set_red()                     # case 1
                     self.rotate_l(p)                # case 1
-                    # new bro after rotate
+                    # new bro after rotate 这个兄弟节点一定是黑色的，因为他是原兄弟节点的子节点通过左旋而来。删除前一定满足红黑树定义，如果原兄弟节点是红色，则他的子节点一定是黑色
                     b = self.bro(n)                 # case 1
 
                 if b.left.is_black() and b.right.is_black():
@@ -221,7 +221,7 @@ class RedBlackTree:
                         b.left.set_black()          # case 3
                         b.set_red()                 # case 3
                         self.rotate_r(b)            # case 3
-                        # new bro after rotate
+                        # new bro after rotate 这个兄弟节点一定是黑色的，因为他是原兄弟节点的左子节点通过左旋而来。b.left.set_black() 旋转之前将其从红色设定为黑色
                         b = self.bro(n)             # case 3
 
                     # 注意，因为p可能是红或黑，所以不能直接赋值颜色，只能copy

@@ -60,6 +60,15 @@ class Tree:
         self.postorder(node.rchild)
         print(node.item, end=" ")
 
+    # 二叉树的最大深度(Depth > 0)
+    def maxDepth(self, root: Node) -> int:
+        if root is None: 
+            return 0 
+        else: 
+            left_Depth = self.maxDepth(root.lchild) 
+            right_Depth = self.maxDepth(root.rchild) 
+            return max(left_Depth, right_Depth) + 1
+
 if __name__ == "__main__":
     tree = Tree()
     tree.add(0)
@@ -78,6 +87,8 @@ if __name__ == "__main__":
     print(" ")
     tree.postorder(tree.root)
     print(" ")
+    Depth = tree.maxDepth(tree.root)
+    print(Depth)
 
 
 
