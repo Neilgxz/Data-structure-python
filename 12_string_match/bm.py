@@ -28,10 +28,11 @@ def bm(main, pattern):
     suffix = [-1] * m
     prefix = [False] * m
     generate_gs(pattern, m, suffix, prefix)
-
+    
     i = 0
     while i < n-m+1:
         j = m - 1
+        # 得到坏字符下标j
         while j >= 0:
             if main[i+j] != pattern[j]:
                 break
