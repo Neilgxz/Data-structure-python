@@ -20,15 +20,15 @@ def kmp(main, pattern):
 
     # 求解next数组
     next = get_next(pattern)
-    # 其实j-1记录了 已经有多少位连续匹配成功
+    # 其实j记录了 已经有多少位连续匹配成功
     j = 0
     for i in range(n): 
-        # 在pattern[:j]中，从长到短递归去找最长的和后缀子串匹配的前缀字串，直到 j=0 或者 main[i] == pattern[j]
+        # 在pattern[:j]中，从长到短递归去找最长的和后缀子串匹配的前缀字串
         while j > 0 and main[i] != pattern[j]:
             # 遇到坏字符，则模式串0~j-1为好前缀，计算next[j-1]得到最长的可以与后缀子串匹配的前缀字串的结尾下标
             # 将j移动到这个最长匹配前缀的后一个位置，继续比较
             j = next[j-1] + 1   
-
+        # 结束循环，j=0 或者 main[i] == pattern[j]
         if main[i] == pattern[j]:
             if j == m-1: # 对比到模式串的最后一位，全部匹配
                 return i-m+1
