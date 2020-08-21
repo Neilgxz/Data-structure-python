@@ -21,9 +21,14 @@ def permutations(nums: List, n: int, pick_count: int):
         print(permutations_list)
     else:
         for i in range(len(nums) - pick_count):
+            # 每次先固定第i个放进排列列表
             permutations_list[pick_count] = nums[i]
+            # 把固定好的第i个放到数组nums的后面和permutations_list[pick_count]，不让他参与接下来的排列。
             nums[i], nums[len(nums) - pick_count - 1] = nums[len(nums) - pick_count - 1], nums[i]
+            # pick_count+1说明已经选出一个固定的数字并且已经放到尾部len(nums) - pick_count - 1下标的位置
+            # 问题变成除了固定数以外的数组，选取n-1个数的全排列问题。
             permutations(nums, n-1, pick_count+1)
+            # 完成一次排列，把数组恢复原样，用来进行下一次循环。
             nums[i], nums[len(nums) - pick_count - 1] = nums[len(nums) - pick_count - 1], nums[i]
 
 
