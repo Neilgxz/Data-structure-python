@@ -1,6 +1,9 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-
+"""
+编程求出一组数据的逆序对个数：
+利用分治算法，归并排序
+"""
 inversion_num = 0
 
 
@@ -21,20 +24,21 @@ def merge(nums, start, mid, end):
     tmp = []
     while i <= mid and j <= end:
         if nums[i] <= nums[j]:
-            inversion_num += j - mid - 1
             tmp.append(nums[i])
             i += 1
         else:
+            # nums[j]中的元素原本在nums[i]的元素的后边，但是数值却比nums[i]中的一些要小，排序时被放到前面来，所以可以累加逆序度
+            inversion_num += mid - i + 1
             tmp.append(nums[j])
             j += 1
 
     while i <= mid:
-        # 这时nums[i]的逆序数是整个nums[mid+1: end+1]的长度
-        inversion_num += end - mid
+
         tmp.append(nums[i])
         i += 1
 
     while j <= end:
+
         tmp.append(nums[j])
         j += 1
 
@@ -43,7 +47,6 @@ def merge(nums, start, mid, end):
 
 if __name__ == '__main__':
     print('--- count inversion number using merge sort ---')
-    # nums = [5, 0, 4, 2, 3, 1, 6, 8, 7]
     nums = [5, 0, 4, 2, 3, 1, 3, 3, 3, 6, 8, 7]
     print('nums  : {}'.format(nums))
     merge_sort_counting(nums, 0, len(nums)-1)
