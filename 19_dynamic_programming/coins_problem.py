@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-
+"""
+硬币找零问题
+"""
 from typing import List
 
 
@@ -20,6 +22,10 @@ def coins_dp(values: List[int], target: int) -> int:
             else:   # values中的数值要从小到大排序
                 break
         memo[i] = min_num
+    # i = 1; n = 1; min_num = 1; memo[1] = 1
+    # i = 2; n = 1; min_num = 2; memo[2] = 1
+    # i = 3; n = 1; min_num = 3;
+    # i = 3; n = 3; min_num = 1 + memo[3-3] = 1; memo[3] = 1 
 
     # print(memo)
     return memo[-1]
